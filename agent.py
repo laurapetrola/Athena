@@ -82,11 +82,11 @@ def _run_ddl_autocommit(sql: str):
     with engine.connect().execution_options(isolation_level="AUTOCOMMIT") as conn:
         conn.execute(text(sql))
 
-# Initialize LLM
+# Initialize DeepSeek
 llm = ChatOpenAI(
     openai_api_base="https://api.deepseek.com/v1",
     openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-    model="deepseek-chat",
+    model="deepseek-coder",
     temperature=0.0 
 )
 
@@ -334,8 +334,6 @@ query_prompt_template = PromptTemplate(
         # "- When a WHERE clause filters on R.A, and there's a join R.A = S.B, you must also add the same filter to S.B in the WHERE clause. Even if redundant. Always apply this. For example, before: SELECT * FROM R JOIN S ON R.id = S.id WHERE R.id = 123; and after: SELECT * FROM R JOIN S ON R.id = S.id WHERE R.id = 123 AND S.id = 123; \n"
         # "- If the SQL contains col IN (val1, val2, ...), rewrite as multiple col = valX conditions joined by OR. \n"
         # "- Avoid correlated subqueries. Prefer Common Table Expressions (CTEs) or JOINs for filtering based on per-group logic (e.g., MAX per group), especially when computing additional fields.\n"
-        
-        # "- Do correlated subqueries. Avoid Common table expressions (CTEs) or JOINs for filtering based on per-group logic (e.g., MAX per group), expecially when computing additional fields.\n"
         
         # Arlinos
         # "- Remove unnecessary GROUP BY clauses. If there is no HAVING clause and the SELECT contains only one aggregate function or no aggregates and the GROUP BY attribute is a primary key (from a single table or not used as a foreign key), the GROUP BY can be eliminated to reduce query cost.\n"
@@ -1176,3 +1174,4 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"[FATAL ERROR] Unexpected failure: {e}")
             agent_state = {"db_schema": get_db_schema()}
+
