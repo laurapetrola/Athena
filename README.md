@@ -97,6 +97,7 @@ Then open .env and set your variables:
 DEEPSEEK_API_KEY=sk-xxxxxx
 
 # PostgreSQL Connection
+You have to install tpch-10 and host it locally on postgresql.
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
