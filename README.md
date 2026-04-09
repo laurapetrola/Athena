@@ -50,6 +50,11 @@ The system is modular and locally executable — all processing happens on your 
   - Uses DeepSeek for SQL generation & optimization
   - Executes and measures query performance
   - Suggests indexes automatically and re-runs queries
+- **`agent2.py`** — Orchestrates the pipeline:
+  - Connects to SQLServer
+  - Uses DeepSeek for SQL generation & optimization
+  - Executes and measures query performance
+  - Suggests indexes automatically and re-runs queries
 - **`close_query_select.py`** — Handles example retrieval:
   - Loads question–SQL pairs from `examples.json`
   - Encodes them with SentenceTransformer (`all-MiniLM-L6-v2`)
@@ -103,6 +108,14 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=yourpassword
 DB_DATABASE=tpc_h_sf10
+
+# SQLServer Connection
+You have to install tpch-10 and host it locally on sqlserver.
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+DB_DATABASE=tpc_h_sf10
 ```
 
 ## Dataset
@@ -118,9 +131,15 @@ psql -U postgres -d tpc_h_sf10 -f dss.ddl
 Ensure the tables are accessible under your configured database.
 
 ## Running the Application
-Run the interactive agent locally:
+Run the interactive agent locally(for postgresql):
 ```
 python agent.py
+```
+
+or for sqlserver:
+
+```
+python agent2.py
 ```
 
 You’ll see:
@@ -189,8 +208,3 @@ Speedup: 1.57× (36.4% improvement)
 This project is distributed for educational and research purposes.
 Feel free to modify and extend it for local experimentation.
 
-## Future Improvements
-* Support for multiple LLM providers (e.g., OpenAI, Anthropic)
-* Integration with pg_stat_statements for deeper profiling
-* Persistent index performance tracking
-* Web-based interactive UI
