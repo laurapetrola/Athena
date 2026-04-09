@@ -1,0 +1,34 @@
+[
+    {
+        "Show me customer details (ID, name, address, and phone) along with their associated nation and region information grouped": 
+        "SELECT c.c_custkey AS customer_id, c.c_name AS customer_name, c.c_address AS customer_address, c.c_phone AS customer_phone, n.n_name AS nation_name, r.r_name AS region_name FROM h_customer c JOIN h_nation n ON c.c_nationkey = n.n_nationkey JOIN h_region r ON n.n_regionkey = r.r_regionkey GROUP BY c.c_custkey, c.c_name, c.c_address, c.c_phone, n.n_name, r.r_name ORDER BY c.c_custkey;"
+    },
+    {
+        "List all orders whose total price is greater than the total price of every order with priority '2-HIGH'.": 
+        "SELECT o.* FROM h_order o WHERE o.o_totalprice > ALL ( SELECT o2.o_totalprice FROM h_order o2 WHERE o2.o_orderpriority = '2-HIGH' );"
+    },
+    {
+        "Find all orders where the total price is greater than at least one high-priority order.": 
+        "SELECT o1.o_orderkey, o1.o_totalprice, o1.o_orderpriority FROM h_order o1 WHERE o1.o_totalprice > ANY ( SELECT o2.o_totalprice FROM h_order o2 WHERE o2.o_orderpriority = '1-URGENT' );"
+    },
+    {
+        "Show me all the rows from the lineitem table where the l_quantity value, when converted to text, is equal to '28'.": 
+        "SELECT * FROM h_lineitem WHERE CAST(l_quantity AS VARCHAR(MAX)) = '28';"
+    },
+    {
+        "Show me a clean list of all orders with no duplicates, including each order's ID, total price, and the customer's name who placed it - sorted by order number.": 
+        "SELECT DISTINCT o.o_orderkey AS order_id, o.o_totalprice AS total_price, c.c_name AS customer_name FROM h_order o JOIN h_customer c ON o.o_custkey = c.c_custkey ORDER BY o.o_orderkey;"
+    },
+    {
+        "For each customer, what is the date of their most recent order and the total price of that order?": 
+        "SELECT c.c_custkey, c.c_name, MAX(o.o_orderdate) AS most_recent_order_date, o.o_totalprice FROM h_customer c JOIN h_order o ON c.c_custkey = o.o_custkey WHERE o.o_orderdate = ( SELECT MAX(o2.o_orderdate) FROM h_order o2 WHERE o2.o_custkey = c.c_custkey ) GROUP BY c.c_custkey, c.c_name, o.o_totalprice;"
+    },
+    {
+        "Show supplier id and name for suppliers from nation key 15, and include the nation name.": 
+        "SELECT s.s_suppkey, s.s_name, n.n_name FROM h_supplier s JOIN h_nation n ON s.s_nationkey = n.n_nationkey WHERE s.s_nationkey = 15;"
+    },
+    {
+        "Which customers are from either 'GERMANY', 'FRANCE', or 'BRAZIL'?": 
+        "SELECT c.c_custkey, c.c_name, c.c_address, c.c_phone, c.c_acctbal, c.c_mktsegment, n.n_name AS country FROM h_customer c JOIN h_nation n ON c.c_nationkey = n.n_nationkey WHERE n.n_name IN ('GERMANY', 'FRANCE', 'BRAZIL') ORDER BY c.c_custkey;"
+    }
+]
