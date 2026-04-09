@@ -162,7 +162,7 @@ The agent will:
 5. Suggest indexes if beneficial
 6. Re-run query and compare runtime
 
-## Embeddings (Few-Shot Retrieval)
+## Embeddings (Few-Shot Retrieval) -> Only for PostgreSQL (agent.py)
 The module ```close_query_select.py``` builds semantic embeddings using SentenceTransformer (all-MiniLM-L6-v2) and FAISS:
 
 * ```examples.json``` stores reference (question → SQL) mappings.
